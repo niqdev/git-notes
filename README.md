@@ -1,6 +1,6 @@
 # Git notes from [codeschool](https://www.codeschool.com/paths/git)
 
-### 1.1 Introduction
+### Introduction
 
 Git is a DVCS (Distributed Version Control System)
 
@@ -44,7 +44,7 @@ git commit -m "COMMENT"
 git log
 ```
 
-### 1.2 Staging & remotes
+### Staging & remotes
 
 ```bash
 # show unstaged differences since last commit
@@ -123,7 +123,7 @@ git remote -v
 git push heroku master
 ```
 
-### 1.3 Cloning & branching
+### Cloning & branching
 
 clone:
 ```bash
