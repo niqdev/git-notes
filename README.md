@@ -114,9 +114,11 @@ git remote rm NAME
 # '-u' option means:
 # next time you run 'git push' you do not need to specify the name of the branch
 git push -u NAME BRANCH
+```
 
-# example with HEROKU
-# also add remote
+Tips with heroku:
+```bash
+# create and add remote
 heroku create
 git remote -v
 # after push trigger re-deploy
@@ -125,7 +127,7 @@ git push heroku master
 
 ### Cloning & branching
 
-clone:
+Clone:
 ```bash
 # clone remote repository in a directory named 'git-notes'
 git clone https://github.com/niqdev/git-notes.git
@@ -133,7 +135,7 @@ git clone https://github.com/niqdev/git-notes.git
 git clone https://github.com/niqdev/git-notes.git git-notes-alias
 ```
 
-branch:
+Branch:
 ```bash
 # create new local branch (do NOT switch or move HEAD)
 git branch BRANCH_NAME
@@ -152,7 +154,7 @@ git checkout BRANCH_NAME
 git checkout -b BRANCH_NAME
 ```
 
-merge:
+Merge:
 
 `master --(develope feature on)--> BRANCH_NAME --(back to)--> master`
 
@@ -167,4 +169,50 @@ git merge --no-ff BRANCH_FROM
 
 # when merging, if change were made on both branches,
 # git can't fast-forward so need to add merge commit (automatically)
+```
+
+### Branching
+```bash
+git checkout -b BRANCH_NAME
+# create remote branch
+# links local branch to the remote branch (start tracking)
+git push origin BRANCH_NAME
+
+# show remote branches and if are tracked/sync
+git remote show origin
+```
+
+Remove branch:
+```bash
+# delete REMOTE branch
+git push origin :REMOTE_BRANCH_NAME
+# delete LOCAL branch (warning if uncommitted changes)
+git branch -d LOCAL_BRANCH_NAME
+# delete LOCAL branch (without warnings)
+git branch -D LOCAL_BRANCH_NAME
+
+# if try to push to a deleted remote branch
+# to clean up deleted remote branches
+git remote prune origin
+git fetch -p
+```
+
+Tips with heroku:
+```bash
+# heroku deploys only MASTER branch
+# push and deploy local branch on heroku
+git push heroku LOCAL_BRANCH_NAME:master
+```
+
+Tag:
+```bash
+# a TAG is a reference to a commit (used mostly for reference versioning)
+# list all tags
+git tag
+# checkout code at specific tag i.e TAG_NAME= v0.0.X
+git checkout TAG_NAME
+# add a new tag
+git tag -a TAG_NAME -m "v0.0.X"
+# push new tags
+git push --tags
 ```
