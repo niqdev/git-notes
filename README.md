@@ -113,7 +113,7 @@ git remote rm NAME
 # push to remote (branch usually is master)
 # '-u' option means:
 # next time you run 'git push' you do not need to specify the name of the branch
-git push -u NAME <branch>
+git push -u NAME BRANCH
 
 # example with HEROKU
 # also add remote
@@ -121,4 +121,50 @@ heroku create
 git remote -v
 # after push trigger re-deploy
 git push heroku master
+```
+
+### 1.3 Cloning & branching
+
+clone:
+```bash
+# clone remote repository in a directory named 'git-notes'
+git clone https://github.com/niqdev/git-notes.git
+# clone remote repository in a directory named 'git-notes-alias'
+git clone https://github.com/niqdev/git-notes.git git-notes-alias
+```
+
+branch:
+```bash
+# create new local branch (do NOT switch or move HEAD)
+git branch BRANCH_NAME
+
+# list local branch
+git branch
+# list remote branch
+git branch -r
+# list local and remote branch
+git branch -a
+
+# move HEAD to branch timeline
+git checkout BRANCH_NAME
+
+# creat new branch and switch timeline
+git checkout -b BRANCH_NAME
+```
+
+merge:
+
+`master --(develope feature on)--> BRANCH_NAME --(back to)--> master`
+
+```bash
+# merge from-to (fast forward: no commit of merge)
+# [BRANCH_TO= master][BRANCH_FROM= BRANCH_NAME]
+git checkout BRANCH_TO
+git merge BRANCH_FROM
+
+# force no fast forward merge
+git merge --no-ff BRANCH_FROM
+
+# when merging, if change were made on both branches,
+# git can't fast-forward so need to add merge commit (automatically)
 ```
