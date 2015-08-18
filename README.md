@@ -72,7 +72,7 @@ git reset --soft HEAD^
 git add FILE_NAME
 git commit --amend -m "COMMENT"
 
-# undo last (1/2) commit and all changes
+# undo last (1|2) commit and all changes
 git reset --hard HEAD^
 git reset --hard HEAD^^
 
@@ -91,7 +91,7 @@ So create a new repository on GitHub and push an existing repository
 # push an existing repository
 git remote add origin https://github.com/niqdev/git-notes.git
 
-#show remote repository
+# show remote repository
 git remote -v
 
 # [origin= remote repository name]
@@ -105,14 +105,15 @@ git pull
 Having multiple remotes
 ```bash
 # add new remote (origin|test|production) - associate name to url
-git remote add <name> <address>
+git remote add NAME ADDRESS
 
 # remove remote
-git remote rm <name>
+git remote rm NAME
 
 # push to remote (branch usually is master)
-# '-u' option is for next time you run 'git push' you do not need to specify the name of the branch
-git push -u <name> <branch>
+# '-u' option means:
+# next time you run 'git push' you do not need to specify the name of the branch
+git push -u NAME <branch>
 
 # example with HEROKU
 # also add remote
