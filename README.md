@@ -1,5 +1,7 @@
 # Git notes from [codeschool](https://www.codeschool.com/paths/git)
 
+> work in progress
+
 ### Introduction
 
 Git is a DVCS (Distributed Version Control System)
@@ -215,4 +217,28 @@ git checkout TAG_NAME
 git tag -a TAG_NAME -m "v0.0.X"
 # push new tags
 git push --tags
+```
+
+### Rebase
+```bash
+# pulls down any changes but doesn't merge them
+git fetch
+
+# what rebase internally does is (no merge commit):
+# 1) move all changes in master (local) which are not
+#    in origin/master (local sync with remote) to a temporary area
+# 2) run all origin/master commit one at a time
+# 3) run all commits in the temporary area on top, one at a time
+git rebase XXX
+
+# to avoid merge commit (fast forward)
+git checkout BRANCH_FROM
+git rebase BRANCH_TO
+git checkout BRANCH_TO
+git merge BRANCH_FROM
+
+# resolve conflict manually
+git rebase --continue
+git rebase --skip
+git rebase --abort
 ```
