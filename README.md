@@ -3,8 +3,9 @@
 > work in progress
 
 Git Real:
-* [Introduction](#Introduction)
-* [Staging & remotes](#Staging & remotes)
+* [Introduction](./#introduction)
+* [Staging & remotes](./#staging--remotes)
+* [Cloning & branching](#cloning--branching)
 
 ### Introduction
 
