@@ -2,6 +2,10 @@
 
 > work in progress
 
+Git Real:
+* [Introduction](#Introduction)
+* [Staging & remotes](#Staging & remotes)
+
 ### Introduction
 
 Git is a DVCS (Distributed Version Control System)
