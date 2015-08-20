@@ -242,3 +242,107 @@ git rebase --continue
 git rebase --skip
 git rebase --abort
 ```
+
+### History and configuration
+
+Log:
+```bash
+# history (SHA hash)
+git log
+
+git config --global color.ui true
+
+# %ad = author date
+# %an = author name
+# %h = SHA hash
+# %s = subject
+# %d = ref names
+git log --pretty=online
+git log --pretty=format:"%h %ad - %s [%an]"
+
+# log file modified
+git log --oneline -p
+
+# statistics
+git log --oneline --stat
+
+# graphical
+git log --oneline --graph
+
+# date ranges
+git log --until=1.minute.ago
+git log --since=1.day.ago
+git log --since=1.hour.ago
+git log --since=1.month.ago --until=2.weeks.ago
+git log --since=2001-01-01 --until=2012-12-31
+```
+
+Diff:
+```bash
+# changes since last commit
+git diff
+# difference between last commit and current state (includes staged and unstaged)
+git diff HEAD
+
+# parent of latest commit
+git diff HEAD^
+# grandparent of latest commit
+git diff HEAD^^
+# 5 minutes ago
+git diff HEAD~5
+# second most recent commit vs. most recent
+git diff HEAD^..HEAD
+
+# ranges of SHAs (also abbreviated)
+git diff SHA_COMMIT1..SHA_COMMIT2
+
+# between branches
+git diff BRANCH_1 BRANCH_2
+
+# time-based
+git diff --since=1.week.ago --until=1.minute.ago
+
+# difference line-by-line
+# [commit hash][author][date][line][content]
+git blame NOME_FILE --date short
+```
+
+Exclude/ignore:
+```bash
+# exclude only LOCAL folder/file
+.git/info/exclude
+
+# ignore in repository
+.gitignore
+
+# delete from local filesystem and untracked
+git rm FILE_NAME
+
+# if already tracking and want to remove (no deleted) i.e. for logs
+# not deleted from local filesystem, only from git
+# after untrucking, then add to .gitignore
+git rm --cached FILE_NAME
+```
+
+Configuration:
+```bash
+git config --global user.name "niqdev"
+git config --global user.email "niqdev@gmail.com"
+git config --global colot.ui true
+git config --global core.editor vim
+# OS X only
+git config --global merge.tool opendiff
+
+# the global config loaded first, then repo config (overwrite)
+git config user.email "repo-email@gmail.com"
+```
+
+Aliases:
+```bash
+git config --global alias.mylog "log --pretty=format:'%h %s [%an]' --graph"
+git config --global alias.lol "log --graph --decorate --pretty=oneline --abbrev-commit --all"
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+```
