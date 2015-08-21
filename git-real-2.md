@@ -6,6 +6,7 @@ Course index:
 * [Interactive rebase](#interactive-rebase)
 * [Stashing](#stashing)
 * [Purging history](#purging-history)
+* [Working together](#working-together)
 
 ### Interactive rebase
 
@@ -191,7 +192,7 @@ git filter-branch --tree-filter 'rm -f passwords.txt' -- --all
 git filter-branch --tree-filter 'rm -f passwords.txt' -- HEAD
 
 # COMMAND must operate on staging area
-# runs command against each commit, but withou checking it out first (so it's faster)
+# runs command against each commit, but without checking it out first (so it's faster)
 git filter-branch --index-filter COMMAND
 
 # this does NOT work: operates on working directory
@@ -205,9 +206,89 @@ git filter-branch --index-filter COMMAND
 # '-f' option force to re-run
 git filter-branch -f --tree-filter 'rm -f passwords.txt'
 
-# our filters are resulting in some empty commits
+# filters may result in some empty commits
 # '--prune-empty' option drops commits that don't alter any files
 git filter-branch -f --prune-empty -- --all
-# can prune during filtering, too
+# can prune during filtering too
 git filter-branch --tree-filter 'rm -f passwords.txt' --prune-empty -- --all
+```
+
+### Working together
+
+Handling line endings format in different OS: git can auto-correct it
+```bash
+# unix OS: \n
+# windows OS \r\n
+
+# on unix OS: changes CR/LF to LF on commit
+# fixes any windows OS line endings that get introduced
+git config --global core.autocrlf input
+
+# on windows OS: changes LF to CR/LF on checkout
+# but converts back to LF on commit
+git config --global core.autocrlf true
+
+# on windows OS ONLY projects: does no conversion
+# conversion isn't needed if everyone expects CR/LF
+git config --global core.autocrlf false
+```
+
+Git attribute files
+```bash
+# edit .gitattributes files in project root: file types/conversion settings
+# files tipe: *, *.txt, *.jpg, ...
+# conversion settings:
+# choose conversion automatically
+text=auto
+# treat files as text - convert to OS's line ending on checkout, back to LF on commit
+text
+# convert to specified format on checkout, back to LF on commit
+text eol=crlf
+text eol=lf
+# treat file as binary - do no conversion
+binary
+
+# Rule examples:
+# by default, auto-convert line endings
+* text=auto
+# treat HTML and CSS files as text
+*.html text
+*.css text
+# treat image files as binary
+*.jpg binary
+*.png binary
+# keep shell script in unix format
+*.sh text eol=lf
+# batch files in windows format
+*.bat text eol=crlf
+```
+
+Cherry-pick: we need a commit in a branch into another branch
+```bash
+# in BRANCH_FROM list commits sha
+git log --oneline
+# switch to BRANCH_TO
+git checkout BRANCH_TO
+# cherry-pick commit in BRANCH_FROM into BRANCH_TO
+# copy a single commit to the current branch
+git cherry-pick SHA
+
+# cherry-pick and change message of commit
+git cherry-pick --edit SHA
+# opens an editor, then save and quit
+
+# cherry-pick and combine multiple commits
+# '--no-commit' option pulls in changes and stage them, but doesn't commit
+git cherry-pick --no-commit <SHA_LIST>
+# after you need to manually commit changes
+git commit -m "COMMENT"
+
+# track which commit we cherry-picked from
+# '-x' option adds source SHA to commit message
+# only useful with public branches: don't use for local branch
+git cherry-pick -x SHA
+
+# track who cherry-picked the commit along with the original committer
+# '--signoff' option adds current user's name to commit message
+git cherry-pick --signoff SHA
 ```
