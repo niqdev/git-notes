@@ -4,6 +4,7 @@
 
 Course index:
 * [Interactive rebase](#interactive-rebase)
+* [Stashing](#stashing)
 
 ### Interactive rebase
 
@@ -76,4 +77,89 @@ git rebase -i HEAD~N
 # change 'pick' to 'squash', then save and exit
 # 'squash' merges a commit with the previous commit
 # another editor pops up, with the commits being squashed
+```
+
+### Stashing
+```bash
+# take same file and store away in a temporary area
+# so that you can restore them at a later time
+
+# save modified files and restore last commit
+# push stash onto the stash-stack
+git stash save
+
+# bring stashed files back
+git stash apply
+
+# list all stashes (WIP = work in progress)
+git stash list
+
+# apply specific N stash (do not remove)
+git stash apply stash@{N}
+
+# discard a stash
+git stash drop
+```
+
+Shortcuts:
+```bash
+# shortcut                  # same as
+git stash           --->    git stash save
+git stash apply     --->    git stash apply stash@{0}
+git stash drop      --->    git stash drop stash@{0}
+git stash pop       --->    git stash apply + git stash drop
+git stash show      --->    git stash show stash@{0}
+```
+
+Conflicts:
+```bash
+# possible conflict
+git stash apply
+
+# commit or reset any local changes, as appropriate
+git reset --hard HEAD
+# then
+git stash apply
+
+# when conflict with 'pop', after merging conflict
+git stash pop
+# then stash won't be dropped automatically, so manually drop it
+git stash drop
+```
+
+More options:
+```bash
+# when stashing, both staged and unstaged are stored/restored
+# '--keep-index' option causes the staging area not to be stashed
+git stash save --keep-index
+
+# normally only tracked files are stashed
+# '--include-untracked' option causes untracked files to be stashed, too
+git stash save --include-untracked
+git stash save -u
+
+# 'git stash list' can take any option 'git log' can
+git stash list --stat
+
+# show diff of N stash
+git stash show stash@{N}
+
+# 'git stash show' also can take any option 'git log' can
+# '--patch' shows file diff
+git stash show --patch
+
+# provide a stash message when saving
+git stash save "COMMENT"
+
+# clear all stashes at once
+git stash clear
+```
+
+Branching:
+```bash
+# accidentally delete branch with stash N
+# need a new branch to restore stashed changes
+# checks a new branch out and drops the stash automatically
+git stash branch BRANCH_NAME stash@{N}
+# then new branch is an ordinary branch, ready for commits
 ```
