@@ -23,7 +23,7 @@ git rebase -i HEAD
 git rebase -i HEAD^
 ```
 
-Reorder commits
+Reorder commits:
 ```bash
 # show list of commits from newest to oldest
 git logs --oneline
@@ -80,10 +80,9 @@ git rebase -i HEAD~N
 ```
 
 ### Stashing
-```bash
-# take same file and store away in a temporary area
-# so that you can restore them at a later time
 
+Take same file and store away in a temporary area so that you can restore them at a later time
+```bash
 # save modified files and restore last commit
 # push stash onto the stash-stack
 git stash save
@@ -94,7 +93,7 @@ git stash apply
 # list all stashes (WIP = work in progress)
 git stash list
 
-# apply specific N stash (do not remove)
+# apply specific N stash (does not remove from stash-stack)
 git stash apply stash@{N}
 
 # discard a stash
@@ -156,10 +155,10 @@ git stash clear
 ```
 
 Branching:
+
+If accidentally a branch with stash N is deleted you need a new branch to restore stashed changes
 ```bash
-# accidentally delete branch with stash N
-# need a new branch to restore stashed changes
 # checks a new branch out and drops the stash automatically
 git stash branch BRANCH_NAME stash@{N}
-# then new branch is an ordinary branch, ready for commits
+# then the new branch is an ordinary branch, ready for commits
 ```
