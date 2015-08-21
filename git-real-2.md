@@ -5,6 +5,7 @@
 Course index:
 * [Interactive rebase](#interactive-rebase)
 * [Stashing](#stashing)
+* [Purging history](#purging-history)
 
 ### Interactive rebase
 
@@ -161,4 +162,52 @@ If accidentally a branch with stash N is deleted you need a new branch to restor
 # checks a new branch out and drops the stash automatically
 git stash branch BRANCH_NAME stash@{N}
 # then the new branch is an ordinary branch, ready for commits
+```
+
+### Purging history
+
+If you commit a file that you shouldn't (like passwords), even if you delete it, its content is still visible in history
+
+There are commands in git that can rewrite history, but *with great power comes great responsability*
+```bash
+# backs up entire repo before lose work when rewriting history
+git clone REPOSITORY_NAME REPOSITORY_NAME_BACKUP
+
+# checks each commit out into working directory, runs COMMAND and re-commit
+git filter-branch --tree-filter COMMAND
+
+# NOTE: if the COMMAND fails for any reason, the filter will stop
+
+# examples (COMMAND is any shell command)
+# remove passwords.txt from project root
+# '-f' option means that also if file is not present to do not fail
+--tree-filter 'rm -f passwords.txt'
+# remove video files from any directory
+--tree-filter 'find . -name "*.mp4" -exec rm {} \;'
+
+# '--all' option means filter all commits in all branches
+git filter-branch --tree-filter 'rm -f passwords.txt' -- --all
+# filter only current branch
+git filter-branch --tree-filter 'rm -f passwords.txt' -- HEAD
+
+# COMMAND must operate on staging area
+# runs command against each commit, but withou checking it out first (so it's faster)
+git filter-branch --index-filter COMMAND
+
+# this does NOT work: operates on working directory
+--index-filter 'rm -f passwords.txt'
+# this it works: operates on staging area
+# '--ignore-unmatch' option succeeds even if file isn't present
+--index-filter 'git rm --cached --ignore-unmatch passwords.txt'
+
+# after running 'filter-branch' git leaves a backup of your tree in the '.git' directory
+# so by default you can't run it again because it won't overwrite the backup
+# '-f' option force to re-run
+git filter-branch -f --tree-filter 'rm -f passwords.txt'
+
+# our filters are resulting in some empty commits
+# '--prune-empty' option drops commits that don't alter any files
+git filter-branch -f --prune-empty -- --all
+# can prune during filtering, too
+git filter-branch --tree-filter 'rm -f passwords.txt' --prune-empty -- --all
 ```
