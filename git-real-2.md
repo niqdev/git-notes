@@ -7,6 +7,7 @@ Course index:
 * [Stashing](#stashing)
 * [Purging history](#purging-history)
 * [Working together](#working-together)
+* [Submodules](#submodules)
 
 ### Interactive rebase
 
@@ -233,7 +234,7 @@ git config --global core.autocrlf true
 git config --global core.autocrlf false
 ```
 
-Git attribute files
+Git attribute files:
 ```bash
 # edit .gitattributes files in project root: file types/conversion settings
 # files tipe: *, *.txt, *.jpg, ...
@@ -291,4 +292,76 @@ git cherry-pick -x SHA
 # track who cherry-picked the commit along with the original committer
 # '--signoff' option adds current user's name to commit message
 git cherry-pick --signoff SHA
+```
+
+### Submodules
+
+A Git repo *inside* a Git repo
+* pull down updates easily
+* test your changes with an actual dependent project
+* share changes easily
+* history independent of containig repo
+```bash
+# use case: share a directory between different repository
+# 1) convert directory into a new repository
+# 2) add the shared repository as a submodule to another repository
+git submodule add git@ORIGIN_URL:DIRECTORY_NAME.git
+# git adds a config file named .gitmodules
+# finally commit and push
+
+# modify submodule
+cd DIRECTORY_SUBMOD
+git checkout master
+# make changes to submdule
+git commit -am "COMMENT in submodule"
+git push
+# update parent project also
+cd ..
+git add DIRECTORY_SUBMOD
+git commit -am "COMMENT in parent submodule"
+git push
+
+# when submodule change, also parent need to be updated
+
+# clone a project with submodules
+git clone git@URL:REPO.git
+# but initially the submodules directories are empty!
+# initialize directory as submodule
+cd DIRECTORY_SUBMOD
+git submodule init
+# clone the repo and checkout the commit specified by the parent project
+git submodule update
+# the pull as usual
+git pull
+# but to get changes in the submodule itself and retrieve file update
+# from the parent project
+git submdule update
+
+# NOTE: 'git submodule update' checks out submodule in a HEADLESS state
+# i.e. active branch= '* (no branch)'
+git checkout master
+# when git warn about ORPHANED commit: merge it directly
+git merge SHA
+git push
+# and don't forget to update also parent directory
+cd ..
+git commit -a -m "COMMENT in parent"
+git push
+
+# always push in order
+# 1) /submodule     ---> git push
+# 2) /              ---> git push
+# if forgot to push in submodule
+# other contributor that will run 'git submodule update'
+# will have and error like: 'reference is not a tree ... unable to checkout in sobmodule'
+
+# worried about forgetting push in root porject
+# will abort a push if you haven't pushed a submodule
+git push --recurse-submodules=check
+
+# to push always all repo (also submodule)
+git push --recurse-submodules=on-demand
+
+# alias when work with submodule!
+git config alias.pushall "push --recurse-submodules=on-demand"
 ```
