@@ -8,6 +8,7 @@ Course index:
 * [Purging history](#purging-history)
 * [Working together](#working-together)
 * [Submodules](#submodules)
+* [Reflog](#reflog)
 
 ### Interactive rebase
 
@@ -331,7 +332,7 @@ cd DIRECTORY_SUBMOD
 git submodule init
 # clone the repo and checkout the commit specified by the parent project
 git submodule update
-# the pull as usual
+# then pull as usual
 git pull
 # but to get changes in the submodule itself and retrieve file update
 # from the parent project
@@ -364,4 +365,43 @@ git push --recurse-submodules=on-demand
 
 # alias when work with submodule!
 git config alias.pushall "push --recurse-submodules=on-demand"
+```
+
+### Reflog
+
+You may decided you didn't need latest commit and delete it, but then you want it back
+```bash
+git log --pretty=oneline
+git reset --hard SHA_COMMIT_TO_DELETE
+# then you changed your mind and want it back
+# git never deletes a commit
+
+# git has a second log, only in local repo
+git reflog
+# git updates the reflog anytime HEAD moves
+# (due to new commits, checking out branches, or resetting)
+# [commit SHA][reflog shortname][operation that caused HEAD to move]
+# HEAD@{0} is always your current commit
+
+# when we know where the commit is, just point the branch back to it
+git reset --hard SHA_COMMIT_DELETED
+# or just use shortname N
+git reset --hard HEAD@{N}
+```
+
+You may decided you didn't need a branch and you deleted it, but then you want it back
+```bash
+# you had a warning
+git branch -d BRANCH_NAME
+git branch -D BRANCH_NAME
+
+# branch was deleted but commits not: find latest commit and re-create the branch that points to it
+# '--walk-reflogs' option to see the reflog info in full log format
+# includes reflogs shortnames and messages
+git reflog --walk-reflogs
+# restore deleted branch: create another branch and points it at that commit
+git branch RESTORE_BRANCH_NAME SHA
+git branch RESTORE_BRANCH_NAME HEAD@{N}
+# then just check it out
+git checkout RESTORE_BRANCH_NAME
 ```
