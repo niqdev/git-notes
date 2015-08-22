@@ -1,7 +1,5 @@
 # Git Real 2
 
-> work in progress
-
 Course index:
 * [Interactive rebase](#interactive-rebase)
 * [Stashing](#stashing)
@@ -399,6 +397,7 @@ git branch -D BRANCH_NAME
 # '--walk-reflogs' option to see the reflog info in full log format
 # includes reflogs shortnames and messages
 git reflog --walk-reflogs
+
 # restore deleted branch: create another branch and points it at that commit
 git branch RESTORE_BRANCH_NAME SHA
 git branch RESTORE_BRANCH_NAME HEAD@{N}
