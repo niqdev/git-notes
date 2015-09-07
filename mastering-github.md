@@ -1,9 +1,9 @@
 # Mastering GitHub
 
 Course index:
-* [Config git](#config-git)
+* [Fork based workflows](#fork-based-workflows)
 
-### Config git
+### Fork based workflows
 Different level of configuration
 ```bash
 # to set configuration for a single repo
@@ -59,4 +59,29 @@ Configure aliases
 git config --global alias.s "status -s"
 # concise useful log output
 git config --global alias.lg "log --oneline --decorate --all --graph"
+```
+
+*Fork on GitHub*: if you aren't a collaborator, you can clone locally and commit, but you can't push.
+
+*Submitting a Pull Request on GitHub*
+
+Step: `Pull requests > New pull request > Create pull request > Send pull request`
+
+then, only the owner or collaborators can accept/reject PRs i.e. `Merge pull request`
+
+Updating fork: every time a PR is accepted in upstream repository
+```bash
+# add remote for upstream
+git remote add upstream PATH_TO_REPO
+
+# fetch changes
+git fetch upstream
+# merge them into master
+git merge upstream/master master
+
+# or equivalent
+git pull upstream master
+
+# push changes to your master
+git push origin master
 ```
